@@ -83,7 +83,7 @@ Run:
 
     moyenne <-- moyenne / 20.0;
 
-    input(x);
+    in(x);
     out("Valeur finale de x: ", x);
     out("Somme: ", somme);
     out("Moyenne: ", moyenne);

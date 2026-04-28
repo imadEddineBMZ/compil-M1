@@ -139,9 +139,9 @@ typedef struct {
 } Quad;
 
 typedef struct {
-    int bz_index;
-    int br_index;
-    int has_else;
+    int bz_index;// branch si oui  
+    int br_index;// sauti 
+    int has_else;// a un bloc else
 } IfContext;
 
 typedef struct {
@@ -230,7 +230,7 @@ static int can_assign(DataType dst, DataType src) {
     return dst == src;
 }
 
-static SemSymbol* sem_lookup(const char* name) {
+static SemSymbol* sem_lookup(const char* name) {// nhowsso ida yesxisti deja  
     unsigned int idx = sem_hash(name);
     SemSymbol* cur = semtab[idx];
 
@@ -243,7 +243,7 @@ static SemSymbol* sem_lookup(const char* name) {
     return NULL;
 }
 
-static SemSymbol* sem_insert(const char* name, SymbolKind kind, DataType type, int array_size, int initialized) {
+static SemSymbol* sem_insert(const char* name, SymbolKind kind, DataType type, int array_size, int initialized) {// insertion dans la table de symbole  
     unsigned int idx;
     SemSymbol* s;
 
@@ -338,7 +338,7 @@ static int emit_quad(const char* op, const char* arg1, const char* arg2, const c
     return idx;
 }
 
-static int next_quad(void) {
+static int next_quad(void) {//pour les boucles 
     return quad_count;
 }
 
@@ -359,7 +359,7 @@ static ExprAttr new_temp(DataType t) {
 
     snprintf(name, sizeof(name), "_t%d", temp_count++);
     sem_insert(name, SYM_TEMP, t, 0, 1);
-    return make_expr(name, t);
+    return make_expr(name, t);// tretourner une ex t1= b1 + b2
 }
 
 static void print_quads(void) {
@@ -383,7 +383,7 @@ static void pending_reset(void) {
     pending_ids_count = 0;
 }
 
-static void pending_add(const char* id) {
+static void pending_add(const char* id) {// crier une lisset temp des idf dans une dec muliple 
     int i;
 
     for (i = 0; i < pending_ids_count; i++) {
@@ -410,7 +410,7 @@ static void begin_define_decl(const char* first_id) {
     define_init_value = make_invalid_expr();
 }
 
-static void commit_define_scalar(DataType type) {
+static void commit_define_scalar(DataType type) {// commiter la declaration d'une variable simple
     int i;
     SemSymbol* s;
 
@@ -468,7 +468,7 @@ static int parse_integer_literal(const char* text, int* out) {
     return 1;
 }
 
-static void commit_define_array(DataType type, const char* size_text) {
+static void commit_define_array(DataType type, const char* size_text) {// commiter la declaration d'un tableau
     int size;
 
     if (pending_ids_count != 1) {
@@ -487,7 +487,7 @@ static void commit_define_array(DataType type, const char* size_text) {
     pending_reset();
 }
 
-static void declare_constant(const char* name, DataType type, ExprAttr lit) {
+static void declare_constant(const char* name, DataType type, ExprAttr lit) {//
     SemSymbol* s = sem_insert(name, SYM_CONST, type, 0, 1);
 
     if (!s) {
@@ -585,7 +585,7 @@ static ExprAttr build_not(ExprAttr a) {
     return r;
 }
 
-static void push_if_context(int bz_index) {
+static void push_if_context(int bz_index) {// empiler le contexte d'un if pour gerer les branches et les else
     if (if_top + 1 >= MAX_STACK) {
         fprintf(stderr, "Erreur interne: pile if pleine\n");
         exit(1);
@@ -604,7 +604,7 @@ static IfContext* current_if_context(void) {
     return &if_stack[if_top];
 }
 
-static IfContext pop_if_context(void) {
+static IfContext pop_if_context(void) {//
     IfContext c;
 
     if (if_top < 0) {
@@ -619,7 +619,7 @@ static IfContext pop_if_context(void) {
     return c;
 }
 
-static void push_while_context(int start_idx, int bz_idx) {
+static void push_while_context(int start_idx, int bz_idx) {// empiler le contexte d'une boucle while pour gerer les sauts de retour et les branches de fin de boucle
     if (while_top + 1 >= MAX_STACK) {
         fprintf(stderr, "Erreur interne: pile while pleine\n");
         exit(1);

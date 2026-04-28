@@ -1,0 +1,64 @@
+BeginProject DemoSem;
+
+Setup:
+define a | a : integer;
+define x : integer;
+define x : float;
+define t : integer = 1.5;
+define tabNeg : [integer; 0];
+const C1 : integer = 2.5;
+const CF : float = 3.0;
+define arr : [float; 5];
+
+Run:
+{
+    C1 <-- 10;
+    x <-- 2.5;
+    y <-- 3;
+    arr <-- 1.0;
+    z[1] <-- 4;
+    x[0] <-- 7;
+    arr[89] <-- 9.0;
+
+    x <-- arr;
+    x <-- z;
+    x <-- CF[1];
+    x <-- arr[2.2];
+
+    in(u);
+    in(C1);
+    in(arr);
+
+    if (x > 0) then:
+    {
+        x <-- x + 1;
+    } else {
+        x <-- x + 2;
+    } endIf;
+
+    for u in 0 to 3
+    {
+        x <-- x + 1;
+    } endfor;
+
+    for C1 in 0 to 3
+    {
+        x <-- x + 1;
+    } endfor;
+
+    for arr in 0 to 3
+    {
+        x <-- x + 1;
+    } endfor;
+
+    for x in 0.5 to 3
+    {
+        x <-- x + 1;
+    } endfor;
+
+    for x in 0 to 3.5
+    {
+        x <-- x + 1;
+    } endfor;
+}
+EndProject;
